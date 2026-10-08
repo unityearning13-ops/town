@@ -1,0 +1,6 @@
+{
+  "name": "Unity Earning - Official Town Hall Meeting",
+  "description": "Interactive, corporate presentation for Unity Earning E-Learning Platform Town Hall Meeting featuring platform updates, earning pathways, and recruitment announcements.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

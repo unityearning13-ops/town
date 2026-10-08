@@ -1,0 +1,773 @@
+export function generateStandaloneHtml(): string {
+  return `<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Unity Earning - Official Town Hall Meeting</title>
+  <meta name="description" content="Unity Earning E-Learning Platform - Official Town Hall Meeting interactive presentation">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary-blue: #0284c7;
+      --primary-green: #059669;
+      --card-bg: #ffffff;
+      --card-border: rgba(226, 232, 240, 0.9);
+      --font-family: 'Plus Jakarta Sans', 'Noto Sans Bengali', system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Subtle background grid pattern */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(2, 132, 199, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(2, 132, 199, 0.04) 1px, transparent 1px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      height: 52px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
+      color: #fff;
+      font-weight: 800;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      font-size: 9px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .tag-badge {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      background: #0f172a;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 5px;
+    }
+
+    /* Presentation Viewport - Fixed 100vh fit */
+    #presentation-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 55px 16px 65px 16px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+      overflow: hidden;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .slide-inner {
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    /* Typography & Badges */
+    .slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 800;
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .slide-title {
+      font-size: clamp(22px, 4vw, 38px);
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .slide-desc {
+      font-size: clamp(14px, 2.2vw, 16px);
+      color: #0f172a;
+      line-height: 1.5;
+      max-width: 680px;
+      margin: 0 auto 12px auto;
+      font-weight: 800;
+    }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      gap: 12px;
+      width: 100%;
+      max-width: 760px;
+      margin: 10px auto 0 auto;
+      text-align: left;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .card {
+      background: #ffffff;
+      border: 2px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      background: #f0fdf4;
+      color: var(--primary-green);
+      border: 1px solid #bbf7d0;
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .card-p {
+      font-size: 13px;
+      color: #0f172a;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .warning-box {
+      background: #fff1f2;
+      border: 2px solid #fecdd3;
+      border-radius: 12px;
+      padding: 14px;
+      max-width: 700px;
+      margin: 10px auto;
+      text-align: left;
+      border-left: 6px solid #e11d48;
+    }
+
+    /* Checklist */
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 8px;
+      max-width: 700px;
+      margin: 10px auto;
+      text-align: left;
+    }
+
+    .check-item {
+      background: #fff;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 900;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .check-badge {
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+      background: #059669;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    /* Slimmer Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      padding: 6px 12px 10px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .nav-bar {
+      background: #ffffff;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 9999px;
+      padding: 4px 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+    }
+
+    .nav-btn {
+      background: #f1f5f9;
+      border: none;
+      color: #334155;
+      padding: 5px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    /* Slim Arrow Button */
+    .arrow-circle-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
+      color: #fff;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+    }
+
+    .slide-counter {
+      font-family: monospace;
+      font-size: 11px;
+      font-weight: 800;
+      color: #0f172a;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    /* Thin Progress bar */
+    .progress-bar-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #e2e8f0;
+      z-index: 40;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, var(--primary-blue), var(--primary-green));
+      width: 8.33%;
+      transition: width 0.3s ease-out;
+    }
+
+    @media (max-width: 640px) {
+      .slide {
+        padding: 50px 12px 60px 12px;
+      }
+      .nav-btn span {
+        display: none;
+      }
+      .arrow-circle-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+      }
+      .card {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="brand-box">
+      <div class="brand-logo">UE</div>
+      <div>
+        <div class="brand-name">Unity Earning</div>
+        <div class="brand-sub">E-Learning Platform</div>
+      </div>
+    </div>
+    <div class="tag-badge">TOWN HALL 2026</div>
+  </header>
+
+  <!-- Presentation Viewport (Strict 100vh fit) -->
+  <main id="presentation-container">
+
+    <!-- SLIDE 1 -->
+    <section class="slide active" id="slide-0">
+      <div class="slide-inner">
+        <div class="slide-badge">Official Town Hall Meeting</div>
+        <h1 class="slide-title">Unity Earning E-Learning Platform</h1>
+        <div class="card" style="margin-top: 10px; padding: 16px; border-width: 2px;">
+          <div style="font-size: 18px; font-weight: 900; color: #0f172a;">
+            ইউনিটি আর্নিং ই-লার্নিং প্ল্যাটফর্মের টাউন হল মিটিংয়ে সবাইকে আন্তরিক স্বাগতম।
+          </div>
+          <p class="card-p" style="margin-top: 8px; font-size: 14px; font-weight: 800;">
+            আজকের মিটিংয়ে প্ল্যাটফর্মের নতুন আপডেট, কাজের সুযোগ, আয়ের বিভিন্ন মাধ্যম এবং গুরুত্বপূর্ণ নিয়মাবলি নিয়ে আলোচনা করা হবে।
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2 -->
+    <section class="slide" id="slide-1">
+      <div class="slide-inner">
+        <div class="slide-badge">Platform Announcements</div>
+        <h2 class="slide-title">এই মাসের গুরুত্বপূর্ণ আপডেট</h2>
+        <div class="card-grid grid-2">
+          <div class="card" style="border-color:#10b981;">
+            <div class="card-header">
+              <div class="card-icon" style="background:#059669;color:#fff;">🏆</div>
+              <div>
+                <span style="font-size:10px;font-weight:900;color:#059669;text-transform:uppercase;">Update 01</span>
+                <div class="card-title" style="font-size:17px;">10 Convert = Certificate</div>
+              </div>
+            </div>
+            <p class="card-p">যেসব মেম্বার সফলভাবে ১০টি Convert সম্পন্ন করবেন, তাদের কোম্পানির পক্ষ থেকে সম্মানসূচক Certificate প্রদান করা হবে।</p>
+          </div>
+          <div class="card" style="border-color:#0284c7;">
+            <div class="card-header">
+              <div class="card-icon" style="background:#0284c7;color:#fff;">🎓</div>
+              <div>
+                <span style="font-size:10px;font-weight:900;color:#0284c7;text-transform:uppercase;">Update 02</span>
+                <div class="card-title" style="font-size:17px;">Course Completion Certificate</div>
+              </div>
+            </div>
+            <p class="card-p">যেসব মেম্বার নির্ধারিত কোর্স সফলভাবে সম্পন্ন করবেন, তাদেরও কোম্পানির পক্ষ থেকে Certificate প্রদান করা হবে।</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3 -->
+    <section class="slide" id="slide-2">
+      <div class="slide-inner">
+        <div class="slide-badge">Academic Compliance</div>
+        <h2 class="slide-title">Course Homework Submission</h2>
+        <div class="card" style="margin-bottom: 8px; border-width:2px;">
+          <p class="card-p" style="font-weight:900; color:#0f172a; font-size:14px;">
+            এখন থেকে Data Entry, Digital Marketing এবং অন্যান্য নির্ধারিত কোর্সের নিয়মিত Homework অবশ্যই Homework Portal-এর মাধ্যমে Submit করতে হবে।
+          </p>
+        </div>
+        <div class="checklist-grid" style="max-width: 620px;">
+          <div class="check-item"><span class="check-badge">✓</span> নিয়মিত Homework সম্পন্ন করুন</div>
+          <div class="check-item"><span class="check-badge">✓</span> নির্ধারিত সময়ের মধ্যে Submit করুন</div>
+          <div class="check-item" style="grid-column: 1 / -1;"><span class="check-badge">✓</span> Course Progress ঠিক রাখুন</div>
+        </div>
+        <div style="margin-top:10px;padding:8px 12px;background:#f0fdf4;border:2px solid #a7f3d0;border-radius:8px;font-size:13px;font-weight:900;color:#166534;">
+          📌 Homework Submission এখন থেকে Course Learning Process-এর গুরুত্বপূর্ণ অংশ।
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4 -->
+    <section class="slide" id="slide-3">
+      <div class="slide-inner">
+        <div class="slide-badge">System Verification</div>
+        <h2 class="slide-title">Number Checker ব্যবহার বাধ্যতামূলক</h2>
+        <p class="slide-desc" style="font-size:14px;">
+          কোনো নতুন Registration করার আগে অবশ্যই Number Checker ব্যবহার করে নম্বরটি যাচাই করতে হবে।
+        </p>
+        <div class="card-grid grid-4" style="margin-top:6px;">
+          <div class="card" style="text-align:center;"><div style="font-size:22px;">📱</div><strong style="font-size:13px;">Mobile Number</strong></div>
+          <div class="card" style="text-align:center;border-color:#059669;background:#f0fdf4;"><div style="font-size:22px;">🔍</div><strong style="font-size:13px;color:#047857;">Number Checker</strong></div>
+          <div class="card" style="text-align:center;"><div style="font-size:22px;">🛡️</div><strong style="font-size:13px;">Verify</strong></div>
+          <div class="card" style="text-align:center;background:#059669;color:#fff;"><div style="font-size:22px;">✅</div><strong style="font-size:13px;">Registration</strong></div>
+        </div>
+        <div class="warning-box" style="margin-top:10px;padding:12px;border-width:2px;">
+          <strong style="font-size:13px;">গুরুত্বপূর্ণ সতর্কতা:</strong> পূর্বের Registration করা নম্বর অবশ্যই Number Checker-এর মাধ্যমে যাচাই করতে হবে।
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5 -->
+    <section class="slide" id="slide-4">
+      <div class="slide-inner">
+        <div class="slide-badge" style="background:#fee2e2;color:#991b1b;border-color:#fca5a5;">Policy Notice</div>
+        <h2 class="slide-title">Important Account Policy</h2>
+        <div class="warning-box" style="background:#fff;border:2px solid #fda4af;border-left:6px solid #e11d48;padding:14px;">
+          <h3 style="font-size:16px;font-weight:900;color:#9f1239;margin-bottom:6px;">
+            যেসব Lead Meeting-এ অংশগ্রহণ করেছে, তাদের ক্ষেত্রে ভুলভাবে Sure Shot দেওয়া সম্পূর্ণ নিষিদ্ধ।
+          </h3>
+          <p style="font-size:13px;color:#4c0519;font-weight:800;line-height:1.5;">
+            নিয়ম ভঙ্গ করে Meeting করা Lead-কে Sure Shot দেওয়া হলে সংশ্লিষ্ট Account-এর বিরুদ্ধে ব্যবস্থা নেওয়া হবে এবং প্রয়োজনে Account Block করা হতে পারে।
+          </p>
+        </div>
+        <p style="font-size:14px;font-weight:900;color:#0f172a;margin-top:10px;">
+          ✨ সঠিক তথ্য যাচাই করে কাজ করুন।
+        </p>
+      </div>
+    </section>
+
+    <!-- SLIDE 6 -->
+    <section class="slide" id="slide-5">
+      <div class="slide-inner">
+        <div class="slide-badge">Earning Pathways</div>
+        <h2 class="slide-title">আয়ের সম্ভাব্য মাধ্যম</h2>
+        <p class="slide-desc" style="font-size:13px;">আপনার দক্ষতা ও কাজের ধরন অনুযায়ী কাজ করার সুযোগ রয়েছে।</p>
+        <div class="card-grid grid-3">
+          <div class="card" style="text-align:center;border-width:2px;">
+            <div style="font-size:28px;font-weight:900;color:#94a3b8;">01</div>
+            <div class="card-title" style="font-size:15px;">Lead Generation</div>
+            <p class="card-p" style="font-size:12px;">সহজ ও প্রাথমিক মাধ্যম</p>
+          </div>
+          <div class="card" style="text-align:center;border-width:2px;">
+            <div style="font-size:28px;font-weight:900;color:#94a3b8;">02</div>
+            <div class="card-title" style="font-size:15px;">Course + Project</div>
+            <p class="card-p" style="font-size:12px;">দক্ষতা উন্নয়ন ও প্রজেক্ট</p>
+          </div>
+          <div class="card" style="text-align:center;border-width:2px;">
+            <div style="font-size:28px;font-weight:900;color:#94a3b8;">03</div>
+            <div class="card-title" style="font-size:15px;">Trainer Account</div>
+            <p class="card-p" style="font-size:12px;">নেতৃত্ব ও প্রতিষ্ঠান</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7 -->
+    <section class="slide" id="slide-6">
+      <div class="slide-inner">
+        <div class="slide-badge">Pathway 01</div>
+        <h2 class="slide-title">01 — Lead Generation</h2>
+        <p class="slide-desc" style="font-size:13px;">
+          Lead Generation প্ল্যাটফর্মে কাজ শুরু করার অন্যতম সহজ মাধ্যম। নতুনদের জন্য এটি শেখা তুলনামূলকভাবে সহজ।
+        </p>
+        <div class="card" style="max-width:620px;margin:0 auto;text-align:left;border-left:5px solid var(--primary-green);border-width:2px;">
+          <div style="font-size:13px;font-weight:900;color:#0f172a;">
+            নিয়মিত কাজ ও কার্যকর Lead Generation-এর মাধ্যমে দৈনিক আয়ের সুযোগ তৈরি করা যায়।
+          </div>
+          <div style="margin-top:8px;padding:8px 12px;background:#f0fdf4;border-radius:8px;font-size:15px;font-weight:900;color:#047857;border:1px solid #a7f3d0;">
+            দক্ষতা ও কাজের মান অনুযায়ী দৈনিক প্রায় ৳৬০০–৳৭০০ টাকা পর্যন্ত আয়ের সম্ভাবনা থাকতে পারে।
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8 -->
+    <section class="slide" id="slide-7">
+      <div class="slide-inner">
+        <div class="slide-badge">Pathway 02</div>
+        <h2 class="slide-title">02 — Course Complete করে Project Work</h2>
+        <div style="margin:8px auto;max-width:600px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;font-size:12px;font-weight:900;color:#0369a1;">
+          <span>Learn</span> → <span>Complete Course</span> → <span>Skill Dev</span> → <span>Project Work</span> → <span style="color:#059669;">Earn</span>
+        </div>
+        <p class="slide-desc" style="font-size:13px;">
+          নির্ধারিত কোর্স সম্পন্ন করার মাধ্যমে প্রয়োজনীয় দক্ষতা অর্জন করে বিভিন্ন Project-এ কাজ করার সুযোগ পাওয়া যায়।
+        </p>
+        <div class="card" style="max-width:580px;margin:0 auto;text-align:left;background:#f8fafc;border-width:2px;">
+          <div style="font-size:11px;font-weight:900;color:#0284c7;text-transform:uppercase;">Mentorship Opportunity</div>
+          <p style="font-size:13px;color:#1e293b;font-weight:900;margin-top:3px;">
+            Course সফলভাবে সম্পন্ন করার পর যোগ্যতা ও পারফরম্যান্স অনুযায়ী Mentor হিসেবে কাজ করার সুযোগও থাকতে পারে।
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9 -->
+    <section class="slide" id="slide-8">
+      <div class="slide-inner">
+        <div class="slide-badge">Pathway 03</div>
+        <h2 class="slide-title">03 — Trainer / Sub-Admin Account</h2>
+        <div class="card-grid grid-2" style="max-width:620px;">
+          <div class="card" style="border-width:2px;">
+            <span style="font-size:11px;font-weight:900;color:#0284c7;text-transform:uppercase;">Monthly Salary</span>
+            <div style="font-size:22px;font-weight:900;color:#0f172a;margin:6px 0;">প্রায় ৳5,000–৳6,000+</div>
+            <p class="card-p" style="font-size:12px;">নির্ধারিত দায়িত্ব পালনের ওপর ভিত্তি করে</p>
+          </div>
+          <div class="card" style="border-width:2px;">
+            <span style="font-size:11px;font-weight:900;color:#059669;text-transform:uppercase;">Daily Student Activity</span>
+            <div style="font-size:22px;font-weight:900;color:#0f172a;margin:6px 0;">প্রায় ৳300–৳400</div>
+            <p class="card-p" style="font-size:12px;">দৈনিক সাপোর্ট ও পারফরম্যান্স অনুযায়ী</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10 -->
+    <section class="slide" id="slide-9">
+      <div class="slide-inner">
+        <div class="slide-badge">Eligibility Criteria</div>
+        <h2 class="slide-title">Trainer Account পেতে যোগ্যতা</h2>
+        <div class="checklist-grid">
+          <div class="check-item"><span class="check-badge">✓</span> Communication Skill</div>
+          <div class="check-item"><span class="check-badge">✓</span> কথা বলার দক্ষতা</div>
+          <div class="check-item"><span class="check-badge">✓</span> Leadership Skill</div>
+          <div class="check-item"><span class="check-badge">✓</span> নিয়মিত মিটিং এটেন্ড</div>
+          <div class="check-item"><span class="check-badge">✓</span> স্টুডেন্ট গাইডলাইন</div>
+          <div class="check-item" style="grid-column: 1 / -1; background:#ecfdf5; border-color:#a7f3d0;"><span class="check-badge" style="background:#059669;color:#fff;">✓</span> ১৫টির বেশি Convert-এর অভিজ্ঞতা</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11 -->
+    <section class="slide" id="slide-10">
+      <div class="slide-inner">
+        <div class="slide-badge">Career Opportunity</div>
+        <h2 class="slide-title">Recruitment Notice</h2>
+        <div class="card" style="max-width:600px;margin:10px auto;text-align:left;border:2px solid #bae6fd;">
+          <div style="font-size:18px;font-weight:900;color:#0369a1;margin-bottom:6px;">
+            কোম্পানিতে একজন Female Counsellor নিয়োগ দেওয়া হবে।
+          </div>
+          <p class="card-p" style="font-size:13px;color:#1e293b;font-weight:800;">
+            যারা Counsellor হিসেবে কাজ করতে আগ্রহী এবং শিক্ষার্থীদের পরামর্শ দিতে সক্ষম, তারা আবেদন করতে পারেন।
+          </p>
+          <div style="margin-top:10px;padding:10px;background:#f0fdf4;border-radius:8px;font-size:13px;font-weight:900;color:#166534;border:1px solid #a7f3d0;">
+            📞 আগ্রহী প্রার্থীরা বিস্তারিত তথ্যের জন্য নিজ নিজ Team Leader-এর সঙ্গে যোগাযোগ করুন।
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12 -->
+    <section class="slide" id="slide-11">
+      <div class="slide-inner">
+        <div class="slide-badge">Town Hall Conclusion</div>
+        <h2 class="slide-title" style="font-size:42px;">Thank You</h2>
+        <p class="slide-desc" style="font-size:16px;font-weight:900;color:#0f172a;">
+          আজকের Town Hall Meeting-এ অংশগ্রহণ করার জন্য সবাইকে আন্তরিক ধন্যবাদ।
+        </p>
+        <p class="slide-desc" style="font-size:13px;">
+          নিয়ম মেনে কাজ করুন, নিয়মিত শিখুন এবং আপনার Team-এর সঙ্গে সমন্বয় রেখে এগিয়ে যান।
+        </p>
+        <div style="margin-top:10px;font-size:15px;font-weight:900;color:#059669;background:#f0fdf4;padding:6px 14px;border-radius:20px;display:inline-block;border:1px solid #a7f3d0;">
+          Learn • Develop • Work • Grow
+        </div>
+        <div style="margin-top:14px;font-size:15px;font-weight:900;color:#e11d48;">
+          Thank You Everyone ❤️
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Slimmer Bottom Navigation -->
+  <footer class="bottom-nav">
+    <div class="nav-bar">
+      <button class="nav-btn" id="prev-btn" onclick="prevSlide()" disabled>
+        <span>পূর্ববর্তী</span> ←
+      </button>
+
+      <button class="arrow-circle-btn" id="arrow-btn" onclick="nextSlide()" title="Next slide">
+        ↓
+      </button>
+
+      <div class="slide-counter" id="slide-counter">01 / 12</div>
+
+      <button class="nav-btn" id="next-btn" onclick="nextSlide()">
+        <span>পরবর্তী</span> →
+      </button>
+    </div>
+  </footer>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <script>
+    const totalSlides = 12;
+    let currentSlide = 0;
+
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('slide-counter');
+    const progressBar = document.getElementById('progress-bar');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    function updateSlide(index) {
+      if (index < 0 || index >= totalSlides) return;
+      slides[currentSlide].classList.remove('active');
+      currentSlide = index;
+      slides[currentSlide].classList.add('active');
+
+      const curStr = String(currentSlide + 1).padStart(2, '0');
+      const totStr = String(totalSlides).padStart(2, '0');
+      counter.textContent = curStr + ' / ' + totStr;
+
+      progressBar.style.width = (((currentSlide + 1) / totalSlides) * 100) + '%';
+
+      prevBtn.disabled = currentSlide === 0;
+      if (currentSlide === totalSlides - 1) {
+        nextBtn.innerHTML = '<span>রিস্টার্ট</span> ↺';
+      } else {
+        nextBtn.innerHTML = '<span>পরবর্তী</span> →';
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide >= totalSlides - 1) {
+        updateSlide(0);
+      } else {
+        updateSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        updateSlide(currentSlide - 1);
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        prevSlide();
+      }
+    });
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    window.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    window.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (Math.abs(touchEndX - touchStartX) > 40) {
+        if (touchEndX < touchStartX) nextSlide();
+        else prevSlide();
+      }
+    }, { passive: true });
+  </script>
+</body>
+</html>`;
+}
