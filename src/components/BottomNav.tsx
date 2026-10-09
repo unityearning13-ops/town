@@ -122,11 +122,13 @@ export const BottomNav: React.FC<BottomNavProps> = ({
       </div>
 
       {/* Thin progress indicator bar at the bottom */}
-      <div className="w-full h-0.5 bg-slate-200">
+      <div className="w-full h-1 bg-slate-200 overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-sky-500 via-emerald-500 to-sky-600 transition-all duration-300 ease-out"
+          className="h-full bg-gradient-to-r from-sky-500 via-emerald-500 to-indigo-600 transition-all duration-300 ease-out relative overflow-hidden"
           style={{ width: `${progressPercent}%` }}
-        />
+        >
+          <div className="w-full h-full bg-gradient-to-r from-transparent via-white/80 to-transparent animate-shimmer-move" />
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Volume2, VolumeX, Maximize2, Minimize2, ListFilter, FileText, Download } from 'lucide-react';
+import { Volume2, VolumeX, Maximize2, Minimize2, ListFilter, FileText, Download, PenTool } from 'lucide-react';
 
 interface HeaderNavProps {
   currentSlide: number;
@@ -12,6 +12,9 @@ interface HeaderNavProps {
   showNotes: boolean;
   onOpenOverview: () => void;
   onOpenExport: () => void;
+  isPenActive: boolean;
+  isPenBoxOpen?: boolean;
+  onTogglePen: () => void;
 }
 
 export const HeaderNav: React.FC<HeaderNavProps> = ({
@@ -25,6 +28,9 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   showNotes,
   onOpenOverview,
   onOpenExport,
+  isPenActive,
+  isPenBoxOpen = true,
+  onTogglePen,
 }) => {
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-slate-200 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between select-none shadow-2xs">
@@ -69,17 +75,53 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           <span className="hidden sm:inline">নোটস</span>
         </button>
 
+        {/* Presentation Marker / Pen Tool toggle (নতুন কলম ও মার্কার টুল) */}
+        <button
+          onClick={onTogglePen}
+          title={
+            !isPenActive
+              ? 'কলম/মার্কার চালু করুন (বক্স, তীর চিহ্ন, ফ্রিহ্যান্ড)'
+              : !isPenBoxOpen
+              ? 'মার্কার সেটিংস বক্স পুনরায় খুলুন'
+              : 'মার্কার সেটিংস বক্স হাইড করুন'
+          }
+          className={`p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg border text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+            isPenActive
+              ? 'bg-red-500 border-red-600 text-white shadow-md ring-2 ring-red-400'
+              : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700 hover:text-red-600'
+          }`}
+        >
+          <PenTool className={`w-3.5 h-3.5 ${isPenActive ? 'text-white' : 'text-red-500'}`} />
+          <span className="hidden sm:inline">
+            {isPenActive ? (!isPenBoxOpen ? 'পেন চালু (বক্স খুলুন)' : 'পেন চালু') : 'পেন/মার্কার'}
+          </span>
+          {isPenActive && (
+            <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping hidden sm:inline-block" />
+          )}
+        </button>
+
         {/* Audio feedback toggle */}
         <button
           onClick={onToggleSound}
           title={soundEnabled ? 'সাউন্ড বন্ধ করুন' : 'ট্রানজিশন সাউন্ড চালু করুন'}
-          className={`p-1.5 sm:p-2 rounded-lg border transition-colors cursor-pointer ${
+          className={`p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
             soundEnabled
               ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
               : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-500'
           }`}
         >
-          {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+          {soundEnabled ? (
+            <>
+              <Volume2 className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-0.5 h-3">
+                <span className="w-0.5 bg-emerald-600 rounded-full animate-pulse" style={{ height: '70%', animationDuration: '0.6s' }} />
+                <span className="w-0.5 bg-emerald-600 rounded-full animate-pulse" style={{ height: '100%', animationDuration: '0.4s' }} />
+                <span className="w-0.5 bg-emerald-600 rounded-full animate-pulse" style={{ height: '50%', animationDuration: '0.8s' }} />
+              </div>
+            </>
+          ) : (
+            <VolumeX className="w-3.5 h-3.5" />
+          )}
         </button>
 
         {/* Fullscreen toggle */}

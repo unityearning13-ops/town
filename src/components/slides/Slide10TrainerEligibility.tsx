@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Check, ClipboardCheck, UserCheck } from 'lucide-react';
+import { Check, ClipboardCheck, UserCheck, Star, Award } from 'lucide-react';
 
 interface SlideProps {
   isActive: boolean;
@@ -18,16 +18,20 @@ export const Slide10TrainerEligibility: React.FC<SlideProps> = ({ isActive }) =>
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full max-w-6xl xl:max-w-7xl mx-auto px-4 lg:px-8 py-2 text-center select-none overflow-hidden">
+    <div className="flex flex-col items-center justify-center h-full w-full max-w-6xl xl:max-w-7xl mx-auto px-4 lg:px-8 py-2 text-center select-none overflow-hidden relative">
+      {/* Ambient background energy field */}
+      <div className="absolute w-[520px] h-[520px] bg-gradient-to-tr from-emerald-200/25 via-teal-200/20 to-sky-200/25 rounded-full blur-3xl pointer-events-none -z-10" />
+
       {/* Category Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
         transition={{ duration: 0.4 }}
-        className="mb-2 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-950 text-xs sm:text-base font-black uppercase tracking-wider"
+        className="mb-2 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-950 text-xs sm:text-base font-black uppercase tracking-wider relative overflow-hidden"
       >
-        <ClipboardCheck className="w-5 h-5 text-emerald-700" />
+        <ClipboardCheck className="w-5 h-5 text-emerald-700 animate-pulse" />
         Selection Criteria
+        <Star className="w-4 h-4 text-emerald-600 animate-spin-slow" />
       </motion.div>
 
       {/* Main Title */}
@@ -49,7 +53,7 @@ export const Slide10TrainerEligibility: React.FC<SlideProps> = ({ isActive }) =>
         যোগ্যতা ও পারফরম্যান্স মূল্যায়নের ৭টি আবশ্যিক মানদণ্ড
       </motion.p>
 
-      {/* Visual Checklist Grid */}
+      {/* Visual Checklist Grid with Continuous Pulsing Micro-Animations */}
       <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3.5 w-full max-w-5xl lg:max-w-6xl text-left">
         {criteria.map((item, idx) => {
           const isHighlight = idx === criteria.length - 1;
@@ -59,18 +63,29 @@ export const Slide10TrainerEligibility: React.FC<SlideProps> = ({ isActive }) =>
               initial={{ opacity: 0, scale: 0.95 }}
               animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.35, delay: 0.25 + idx * 0.06 }}
-              className={`flex items-center gap-4 p-4 sm:p-5 rounded-2xl border-2 ${
+              className={`flex items-center gap-4 p-4 sm:p-5 rounded-2xl border-2 relative overflow-hidden transition-all animate-float-gentle ${
                 isHighlight
-                  ? 'bg-emerald-100 border-emerald-400 ring-2 ring-emerald-300 sm:col-span-2'
-                  : 'bg-white border-slate-300 shadow-xs'
+                  ? 'bg-gradient-to-r from-emerald-100 via-teal-50 to-emerald-100 border-emerald-400 ring-2 ring-emerald-300 sm:col-span-2 shadow-sm'
+                  : 'bg-white border-slate-300 shadow-xs hover:border-emerald-300'
               }`}
+              style={{ animationDelay: `${idx * 0.4}s` }}
             >
+              {/* Shimmer on highlight card */}
+              {isHighlight && (
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 overflow-hidden">
+                  <div className="w-full h-full bg-gradient-to-r from-transparent via-white/80 to-transparent animate-shimmer-move" />
+                </div>
+              )}
+
               <div
-                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 font-black ${
+                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 font-black relative ${
                   isHighlight ? 'bg-emerald-600 text-white shadow-2xs' : 'bg-emerald-100 text-emerald-950'
                 }`}
               >
-                <Check className="w-5 h-5 sm:w-6 sm:h-6 stroke-[3]" />
+                {isHighlight && (
+                  <div className="absolute -inset-1 rounded-xl border border-dashed border-emerald-500 animate-spin-slow pointer-events-none" />
+                )}
+                <Check className="w-5 h-5 sm:w-6 sm:h-6 stroke-[3] animate-pulse" />
               </div>
 
               <span
@@ -82,25 +97,27 @@ export const Slide10TrainerEligibility: React.FC<SlideProps> = ({ isActive }) =>
               </span>
 
               {isHighlight && (
-                <span className="ml-auto hidden sm:inline-block text-xs sm:text-sm font-black text-emerald-950 bg-emerald-200 px-4 py-1 rounded-full uppercase">
-                  Key Milestone
-                </span>
+                <div className="ml-auto hidden sm:flex items-center gap-1.5 text-xs sm:text-sm font-black text-emerald-950 bg-emerald-200/90 px-4 py-1 rounded-full uppercase border border-emerald-300 shadow-2xs">
+                  <Award className="w-4 h-4 text-emerald-800 animate-pulse" />
+                  <span>Key Milestone</span>
+                </div>
               )}
             </motion.div>
           );
         })}
       </div>
 
-      {/* Bottom statement */}
+      {/* Bottom statement with Live Verification Badge */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
         transition={{ duration: 0.5, delay: 0.7 }}
-        className="mt-4 max-w-4xl lg:max-w-5xl w-full bg-slate-950 text-white rounded-2xl p-4 sm:p-5 shadow-xs flex items-center justify-center gap-3 text-center"
+        className="mt-4 max-w-4xl lg:max-w-5xl w-full bg-slate-950 text-white rounded-2xl p-4 sm:p-5 shadow-xs flex items-center justify-center gap-3 text-center relative overflow-hidden"
       >
-        <UserCheck className="w-6 h-6 text-emerald-400 shrink-0" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-400 to-sky-500 animate-shimmer-move" />
+        <UserCheck className="w-6 h-6 text-emerald-400 shrink-0 animate-pulse" />
         <p className="text-sm sm:text-xl font-black text-slate-100">
-          উপরের যোগ্যতা বিবেচনা করে উপযুক্ত সদস্যদের <strong className="text-emerald-400 font-black">Trainer Account</strong> দেওয়া হতে পারে।
+          উপরের যোগ্যতা বিবেচনা করে উপযুক্ত সদস্যদের <strong className="text-emerald-400 font-black underline decoration-emerald-400">Trainer Account</strong> দেওয়া হতে পারে।
         </p>
       </motion.div>
     </div>

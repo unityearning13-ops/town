@@ -10,6 +10,7 @@ import { BottomNav } from './components/BottomNav';
 import { SpeakerNotesDrawer } from './components/SpeakerNotesDrawer';
 import { SlidesOverviewModal } from './components/SlidesOverviewModal';
 import { StandaloneExportModal } from './components/StandaloneExportModal';
+import { SlideAnnotationOverlay } from './components/SlideAnnotationOverlay';
 import { soundManager } from './utils/audio';
 
 // Import 13 slides (including special intro cover)
@@ -38,10 +39,40 @@ export default function App() {
   const [showOverview, setShowOverview] = useState(false);
   const [showExport, setShowExport] = useState(false);
   const [isAutoplay, setIsAutoplay] = useState(false);
+  const [isPenActive, setIsPenActive] = useState(false);
+  const [isPenBoxOpen, setIsPenBoxOpen] = useState(true);
 
   // Touch tracking for mobile swipe
   const touchStartX = useRef<number>(0);
   const touchStartY = useRef<number>(0);
+
+  const handleTogglePen = useCallback(() => {
+    setIsPenActive((prev) => {
+      if (!prev) {
+        // Activate pen and open the settings box
+        setIsPenBoxOpen(true);
+        soundManager.playPenToggle();
+        return true;
+      } else {
+        // If pen is active and box is hidden, re-open the box
+        if (!isPenBoxOpen) {
+          setIsPenBoxOpen(true);
+          soundManager.playPenToggle();
+          return true;
+        } else {
+          // If box is open, close/save the box while keeping marking active
+          setIsPenBoxOpen(false);
+          return true;
+        }
+      }
+    });
+  }, [isPenBoxOpen]);
+
+  const handleCloseAndClearPen = useCallback(() => {
+    setIsPenActive(false);
+    setIsPenBoxOpen(false);
+    soundManager.playClickChime();
+  }, []);
 
   const goToSlide = useCallback((index: number) => {
     if (index === currentSlide) return;
@@ -78,7 +109,10 @@ export default function App() {
       // Ignore if user is inside an input/textarea
       if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) return;
 
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') {
+      if (e.key === 'p' || e.key === 'P') {
+        e.preventDefault();
+        handleTogglePen();
+      } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') {
         e.preventDefault();
         handleNext();
       } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
@@ -95,7 +129,7 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleNext, handlePrev, goToSlide]);
+  }, [handleNext, handlePrev, goToSlide, handleTogglePen]);
 
   // Autoplay slideshow timer
   useEffect(() => {
@@ -242,6 +276,9 @@ export default function App() {
         onToggleNotes={() => setShowNotes((prev) => !prev)}
         onOpenOverview={() => setShowOverview(true)}
         onOpenExport={() => setShowExport(true)}
+        isPenActive={isPenActive}
+        isPenBoxOpen={isPenBoxOpen}
+        onTogglePen={handleTogglePen}
       />
 
       {/* Main Slide Viewport */}
@@ -259,6 +296,16 @@ export default function App() {
             {renderSlide(currentSlide)}
           </motion.div>
         </AnimatePresence>
+
+        {/* Live Presentation Annotation Overlay (কলম/মার্কার টুল - স্কয়ার ফ্রেম, তীর চিহ্ন, ফ্রিহ্যান্ড) */}
+        <SlideAnnotationOverlay
+          isActive={isPenActive}
+          isBoxOpen={isPenBoxOpen}
+          onOpenBox={() => setIsPenBoxOpen(true)}
+          onCloseBox={() => setIsPenBoxOpen(false)}
+          onCloseAndClear={handleCloseAndClearPen}
+          currentSlide={currentSlide}
+        />
       </main>
 
       {/* Bottom Navigation */}

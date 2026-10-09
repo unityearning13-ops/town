@@ -46,6 +46,121 @@
   animation: soft-pulse 2.4s infinite ease-in-out;
 }
 
+/* Continuous Live Motion Animations */
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes float-reverse {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(7px); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes scanline-horizontal {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes scanline-vertical {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes flow-dash {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+@keyframes wave-jump {
+  0%, 100% { height: 18%; }
+  50% { height: 95%; }
+}
+
+@keyframes shimmer-move {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes caution-stripes {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 0; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 0.2; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.animate-float-gentle {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 4.5s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 26s linear infinite;
+}
+
+.animate-radar-sweep {
+  animation: radar-sweep 4s linear infinite;
+}
+
+.animate-scanline-h {
+  animation: scanline-horizontal 2.8s ease-in-out infinite;
+}
+
+.animate-scanline-v {
+  animation: scanline-vertical 3s ease-in-out infinite;
+}
+
+.animate-flow-dash {
+  animation: flow-dash 1.6s linear infinite;
+}
+
+.animate-shimmer-move {
+  animation: shimmer-move 3.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-caution-stripes {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(239, 68, 68, 0.12),
+    rgba(239, 68, 68, 0.12) 12px,
+    rgba(255, 255, 255, 0.6) 12px,
+    rgba(255, 255, 255, 0.6) 24px
+  );
+  background-size: 40px 40px;
+  animation: caution-stripes 2s linear infinite;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 /* Smooth custom scrollbars when inner card needs scroll on tiny screens */
 ::-webkit-scrollbar {
   width: 5px;
