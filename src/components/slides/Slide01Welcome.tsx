@@ -71,17 +71,17 @@ export const Slide01Welcome: React.FC<SlideProps> = ({ isActive }) => {
         initial={{ opacity: 0, y: 12 }}
         animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="mt-4 max-w-4xl lg:max-w-5xl w-full bg-white rounded-3xl p-6 sm:p-8 lg:p-9 border-2 border-slate-300 shadow-sm relative overflow-hidden text-center"
+        className="mt-4 max-w-4xl lg:max-w-5xl w-full bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 lg:p-9 border-2 border-emerald-400/90 shadow-[0_12px_35px_-10px_rgba(16,185,129,0.2)] relative overflow-hidden text-center"
       >
-        <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-sky-500 via-emerald-500 to-sky-500 overflow-hidden">
-          <div className="w-full h-full bg-gradient-to-r from-transparent via-white/70 to-transparent animate-shimmer-move" />
+        <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-emerald-500 via-teal-400 to-sky-500 overflow-hidden">
+          <div className="w-full h-full bg-gradient-to-r from-transparent via-white/80 to-transparent animate-shimmer-move" />
         </div>
         
         <p className="text-xl sm:text-3xl lg:text-4xl font-black text-slate-950 leading-relaxed font-sans">
           ইউনিটি আর্নিং ই-লার্নিং প্ল্যাটফর্মের টাউন হল মিটিংয়ে সবাইকে আন্তরিক স্বাগতম।
         </p>
 
-        <p className="mt-3.5 text-sm sm:text-xl lg:text-2xl text-slate-800 leading-relaxed font-black border-t border-slate-200 pt-3.5">
+        <p className="mt-3.5 text-sm sm:text-xl lg:text-2xl text-slate-900 leading-relaxed font-black border-t-2 border-slate-100 pt-3.5">
           আজকের মিটিংয়ে প্ল্যাটফর্মের নতুন আপডেট, কাজের সুযোগ, আয়ের বিভিন্ন মাধ্যম এবং গুরুত্বপূর্ণ নিয়মাবলি নিয়ে আলোচনা করা হবে।
         </p>
       </motion.div>

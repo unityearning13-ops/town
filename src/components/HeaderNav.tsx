@@ -100,27 +100,37 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           )}
         </button>
 
-        {/* Audio feedback toggle */}
+        {/* Audio feedback toggle (নতুন দৃষ্টিনন্দন সাউন্ড বাটন ও অডিও ভিজুয়ালাইজার) */}
         <button
           onClick={onToggleSound}
-          title={soundEnabled ? 'সাউন্ড বন্ধ করুন' : 'ট্রানজিশন সাউন্ড চালু করুন'}
-          className={`p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
+          title={soundEnabled ? 'সাউন্ড বন্ধ করুন (মিষ্টি সুর চালু আছে)' : 'সাউন্ড চালু করুন (ক্লিক করলে মিষ্টি সুর বাজবে)'}
+          className={`p-1.5 sm:px-3 sm:py-1.5 rounded-xl border text-xs font-bold flex items-center gap-2 transition-all cursor-pointer relative overflow-hidden active:scale-95 ${
             soundEnabled
-              ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
-              : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-500'
+              ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 text-white border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.35)] ring-2 ring-emerald-300/40'
+              : 'border-slate-300 bg-white hover:bg-emerald-50/70 hover:border-emerald-300 text-slate-700 hover:text-emerald-700'
           }`}
         >
           {soundEnabled ? (
             <>
-              <Volume2 className="w-3.5 h-3.5" />
-              <div className="flex items-center gap-0.5 h-3">
-                <span className="w-0.5 bg-emerald-600 rounded-full animate-pulse" style={{ height: '70%', animationDuration: '0.6s' }} />
-                <span className="w-0.5 bg-emerald-600 rounded-full animate-pulse" style={{ height: '100%', animationDuration: '0.4s' }} />
-                <span className="w-0.5 bg-emerald-600 rounded-full animate-pulse" style={{ height: '50%', animationDuration: '0.8s' }} />
+              {/* Shimmer light pass */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent animate-shimmer-move pointer-events-none" />
+              <Volume2 className="w-4 h-4 text-emerald-100 shrink-0 animate-pulse" />
+              
+              {/* 4-Band Dancing Equalizer Visualizer */}
+              <div className="flex items-end gap-[2.5px] h-3.5 px-0.5">
+                <span className="w-[3px] bg-white rounded-full animate-pulse shadow-xs" style={{ height: '70%', animationDuration: '0.45s' }} />
+                <span className="w-[3px] bg-amber-200 rounded-full animate-pulse shadow-xs" style={{ height: '100%', animationDuration: '0.35s' }} />
+                <span className="w-[3px] bg-sky-200 rounded-full animate-pulse shadow-xs" style={{ height: '55%', animationDuration: '0.55s' }} />
+                <span className="w-[3px] bg-white rounded-full animate-pulse shadow-xs" style={{ height: '85%', animationDuration: '0.4s' }} />
               </div>
+              <span className="hidden sm:inline tracking-wide font-black text-white">সাউন্ড চালু</span>
             </>
           ) : (
-            <VolumeX className="w-3.5 h-3.5" />
+            <>
+              <VolumeX className="w-4 h-4 text-slate-400 shrink-0" />
+              <span className="hidden sm:inline font-bold text-slate-600">সাউন্ড</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 hidden sm:inline-block" title="সাউন্ড চালু করার ইঙ্গিত" />
+            </>
           )}
         </button>
 

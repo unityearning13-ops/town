@@ -165,8 +165,8 @@ export default function App() {
     const nextVal = !soundEnabled;
     setSoundEnabled(nextVal);
     soundManager.enabled = nextVal;
-    // Play instant pleasant sound whenever sound icon is toggled
-    soundManager.playToggleChime();
+    // Play instant pleasant crystal sound whenever sound icon is toggled
+    soundManager.playToggleChime(nextVal);
   };
 
   // Touch event handlers for mobile gestures
@@ -258,11 +258,13 @@ export default function App() {
     <div
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
-      className="relative w-screen h-screen overflow-hidden bg-slate-50 text-slate-800 flex flex-col select-none"
+      className="relative w-screen h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-sky-50/20 to-emerald-50/30 text-slate-900 flex flex-col select-none"
     >
-      {/* Background patterns */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-60 pointer-events-none" />
-      <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
+      {/* Background patterns and subtle ambient glow */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-50 pointer-events-none" />
+      <div className="absolute inset-0 bg-dot-pattern opacity-25 pointer-events-none" />
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-emerald-200/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-sky-200/20 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header bar */}
       <HeaderNav
